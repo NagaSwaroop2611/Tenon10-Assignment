@@ -10,10 +10,8 @@ import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 
-const allowedOrigins = process.env.CLIENT_URL.split(",").map(origin => origin.trim());
-
 // ---- Core Middleware ----
-app.use(cors({origin: allowedOrigins, credentials: true}));
+app.use(cors({origin: process.env.CLIENT_URL, credentials: true}));
 app.use(express.json({limit: "100mb"}));
 app.use(express.urlencoded({limit: "100mb", extended: true}));
 app.use(cookieParser());
