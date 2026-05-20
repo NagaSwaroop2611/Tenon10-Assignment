@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { NavLink, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../../features/auth/authSlice'
@@ -17,20 +17,52 @@ import {
 import toast from 'react-hot-toast'
 import { motion, AnimatePresence } from 'framer-motion'
 
+
 export default function AdminLayout() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useSelector(s => s.auth)
 
+
   const [collapsed, setCollapsed] = useState(false)
   const [open, setOpen] = useState(false)
+
+  const dropdownRef = useRef(null)
+
+
+  // Close dropdown on Esc key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && open) {
+        setOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [open])
+
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target) && open) {
+        setOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [open])
+
 
   const handleLogout = async () => {
     await dispatch(logout())
     toast.success('Logged out')
     navigate('/login')
   }
+
 
   const navClass = ({ isActive }) =>
     `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200
@@ -39,14 +71,17 @@ export default function AdminLayout() {
       : 'text-brown/70 hover:bg-brown/5 hover:text-brown'
     }`
 
+
   return (
     <div className="flex min-h-screen bg-cream">
+
 
       {/* SIDEBAR */}
       <aside
         className={`bg-cream border-r border-brown/10 flex flex-col sticky top-0 h-screen transition-all duration-300
         ${collapsed ? 'w-16' : 'w-60'}`}
       >
+
 
         {/* HEADER */}
         <div className="p-5 border-b border-brown/10 flex items-center justify-between">
@@ -56,6 +91,7 @@ export default function AdminLayout() {
             </p>
           )}
 
+
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="text-brown"
@@ -63,6 +99,7 @@ export default function AdminLayout() {
             <FiMenu />
           </button>
         </div>
+
 
         {/* ADD PRODUCT */}
         {/* <div className="px-4 py-4">
@@ -75,38 +112,47 @@ export default function AdminLayout() {
           </NavLink>
         </div> */}
 
+
         {/* NAVIGATION */}
         <nav className="flex-1 px-3 flex flex-col gap-1">
+
 
           <NavLink to="/admin" end className={navClass}>
             <FiGrid size={18} />
             {!collapsed && 'Dashboard'}
           </NavLink>
 
+
           <NavLink to="/admin/products" className={navClass}>
             <FiPackage size={18} />
             {!collapsed && 'Products'}
           </NavLink>
+
 
           <NavLink to="/admin/orders" className={navClass}>
             <FiShoppingBag size={18} />
             {!collapsed && 'Orders'}
           </NavLink>
 
+
           <NavLink to="/admin/customers" className={navClass}>
             <FiUsers size={18} />
             {!collapsed && 'Customers'}
           </NavLink>
+
 
           <NavLink to="/admin/profile" className={navClass}>
             <FiUser size={18} />
             {!collapsed && 'Profile'}
           </NavLink>
 
+
         </nav>
 
+
         {/* AVATAR DROPDOWN */}
-        <div className="p-3 relative">
+        <div className="p-3 relative" ref={dropdownRef}>
+
 
           <button
             onClick={() => setOpen(!open)}
@@ -114,6 +160,7 @@ export default function AdminLayout() {
           >
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full overflow-hidden bg-brown text-cream flex items-center justify-center text-sm">
+
 
                 {user?.profilePic ? (
                   <img
@@ -125,6 +172,7 @@ export default function AdminLayout() {
                   <span>{user?.name?.[0]}</span>
                 )}
 
+
               </div>
 
               {!collapsed && (
@@ -133,32 +181,26 @@ export default function AdminLayout() {
                 </span>
               )}
             </div>
-
             {!collapsed && <FiChevronDown />}
           </button>
-
           {open && (
             <div className="absolute bottom-16 left-3 right-3 bg-white border shadow-lg rounded-xl p-2">
-
               <button
                 className="flex items-center gap-2 w-full p-2 rounded hover:bg-gray-100"
                 onClick={() => navigate('/admin/profile')}
               >
                 <FiUser /> Profile
               </button>
-
               <button
                 className="flex items-center gap-2 w-full p-2 rounded hover:bg-gray-100 text-red-500"
                 onClick={handleLogout}
               >
                 <FiLogOut /> Logout
               </button>
-
             </div>
           )}
         </div>
       </aside>
-
       {/* MAIN CONTENT */}
       <main className="flex-1 overflow-auto">
         <AnimatePresence mode="wait">
@@ -173,7 +215,6 @@ export default function AdminLayout() {
           </motion.div>
         </AnimatePresence>
       </main>
-
     </div>
   )
 }

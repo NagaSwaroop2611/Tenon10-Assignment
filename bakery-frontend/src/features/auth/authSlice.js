@@ -102,6 +102,7 @@ const authSlice = createSlice({
       })
       .addCase(getMe.fulfilled, (state, action) => {
         state.user = action.payload
+        localStorage.setItem('user', JSON.stringify(action.payload))
       })
       .addCase(updateProfile.pending, (state) => {
         state.loadingProfile = true
@@ -109,6 +110,7 @@ const authSlice = createSlice({
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loadingProfile = false
         state.user = action.payload
+        localStorage.setItem('user', JSON.stringify(action.payload))
       })
       .addCase(updateProfile.rejected, (state) => {
         state.loadingProfile = false

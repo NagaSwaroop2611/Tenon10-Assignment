@@ -56,24 +56,29 @@ export default function Home() {
 
       {/* Categories */}
       <section className="py-12 max-w-6xl mx-auto px-4">
-        <div className="flex justify-center gap-8">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-8">
+
           {(categories ?? []).map(cat => {
-            const IconComponent = categoryIcons[cat.toLowerCase()] || FaBreadSlice
+            const IconComponent =
+              categoryIcons[cat.toLowerCase()] || FaBreadSlice
+
             return (
               <Link
                 key={cat}
                 to={`/products?category=${cat}`}
-                className="flex flex-col items-center gap-2 group"
+                className="flex flex-col items-center gap-2 group min-w-[80px]"
               >
-                <div className="w-16 h-16 rounded-full bg-cream-dark border-2 border-brown/10 flex items-center justify-center group-hover:border-brown/40 transition-all">
-                  <IconComponent className="text-xl text-brown" />
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-cream-dark border-2 border-brown/10 flex items-center justify-center group-hover:border-brown/40 transition-all">
+                  <IconComponent className="text-lg md:text-xl text-brown" />
                 </div>
-                <span className="text-xs text-brown/70 group-hover:text-brown transition-colors capitalize">
+
+                <span className="text-xs text-center text-brown/70 group-hover:text-brown transition-colors capitalize">
                   {cat.charAt(0).toUpperCase() + cat.slice(1)}
                 </span>
               </Link>
             )
           })}
+
         </div>
       </section>
 
