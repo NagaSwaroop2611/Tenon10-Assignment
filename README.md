@@ -29,8 +29,9 @@ Tenon10-assignment/
 │   │   │   ├── productRoutes.js    # /api/v1/bakery/product/*
 │   │   │   └── orderRoutes.js      # /api/v1/bakery/order/*
 │   │   └── utils/
-│   │       └── generateToken.js    # JWT generator
-│   ├── index.js                    # Express app entry point
+│   │   |   └── generateToken.js    # JWT generator
+│   |   ├── index.js                    # Express app entry point
+|   |   |__ seedAdmin.js
 │   ├── .env                        # Environment variables
 │   └── package.json
 │
