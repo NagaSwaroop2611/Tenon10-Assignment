@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../../features/auth/authSlice'
-import { Input } from '../../components/common'
+import { Input, Button } from '../../components/common'
 import toast from 'react-hot-toast'
 
 export default function Register() {

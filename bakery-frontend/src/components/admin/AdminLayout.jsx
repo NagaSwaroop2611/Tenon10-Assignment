@@ -113,8 +113,18 @@ export default function AdminLayout() {
             className="flex items-center gap-2 w-full justify-between p-2 rounded-xl hover:bg-brown/5 transition"
           >
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-brown text-cream flex items-center justify-center text-sm">
-                {user?.name?.[0]}
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-brown text-cream flex items-center justify-center text-sm">
+
+                {user?.profilePic ? (
+                  <img
+                    src={user.profilePic}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span>{user?.name?.[0]}</span>
+                )}
+
               </div>
 
               {!collapsed && (

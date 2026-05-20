@@ -80,7 +80,7 @@ export default function AdminProfile() {
         <div className="flex items-center gap-6 mb-6">
 
           {/* Avatar */}
-          <div className="relative">
+          <div className="relative cursor-pointer" onClick={() => fileRef.current.click()}>
             <div className="w-24 h-24 rounded-full overflow-hidden bg-cream-dark border">
               {preview ? (
                 <img src={preview} className="w-full h-full object-cover" />
@@ -93,7 +93,6 @@ export default function AdminProfile() {
 
             <button
               type="button"
-              onClick={() => fileRef.current.click()}
               className="absolute bottom-0 right-0 bg-brown text-white p-2 rounded-full"
             >
               <FiCamera size={14} />
